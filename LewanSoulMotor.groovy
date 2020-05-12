@@ -1,7 +1,8 @@
 import com.neuronrobotics.bowlerstudio.vitamins.Vitamins
-
+import java.util.stream.Collectors;
 import eu.mihosoft.vrl.v3d.CSG
 import eu.mihosoft.vrl.v3d.Cube
+import eu.mihosoft.vrl.v3d.Cylinder
 import eu.mihosoft.vrl.v3d.parametrics.*;
 CSG generate(){
 	String type= "LewanSoulMotor"
@@ -33,6 +34,10 @@ CSG generate(){
 	def shoulderHeightValue = measurments.shoulderHeight
 	def bottomHoleDistanceFromCornerValue = measurments.bottomHoleDistanceFromCorner
 	def cable_zValue = measurments.cable_z
+	def bottomShaftLength= measurments.get("bottomShaftLength")
+	for(String key:measurments.keySet().stream().sorted().collect(Collectors.toList())){
+		println "LewanSoul value "+key+" "+measurments.get(key)
+	}
 //	println "Measurment MaxTorqueNewtonmetersValue =  "+MaxTorqueNewtonmetersValue
 //	println "Measurment topHoleCornerInsetValue =  "+topHoleCornerInsetValue
 //	println "Measurment topHoleCircleDiameterValue =  "+topHoleCircleDiameterValue
@@ -56,12 +61,51 @@ CSG generate(){
 //	println "Measurment bottomHoleDistanceFromCornerValue =  "+bottomHoleDistanceFromCornerValue
 //	println "Measurment cable_zValue =  "+cable_zValue
 	// Stub of a CAD object
-	CSG part = new Cube(body_xValue,body_yValue,body_zValue).toCSG()
+	double bodyEdgeToShaft = body_xValue/2
+	def part = new Cube(body_xValue,body_yValue,body_zValue).toCSG()
 					.toZMax()
 					.toYMax()
-					.movey(body_xValue/2)
-	
-	return part
+					.movey(bodyEdgeToShaft)
+	def collar = new Cylinder(shoulderDiameterValue/2,shoulderHeightValue).toCSG()
+	def bottomCOllar = collar
+						.toZMax()
+						.movez(-body_zValue)
+	def bottomShaft =new Cylinder(	measurments.get("bottomShaftDiameter")/2,
+									bottomShaftLength).toCSG()
+						.toZMax()
+						.movez(-body_zValue-shoulderHeightValue)
+	def bottomShaftKeepaway =new Cylinder(	measurments.get("bottomShaftRetainingScrewHeadDiameter")/2,
+											bottomShaftLength).toCSG()
+								.toZMax()
+								.movez(-body_zValue-bottomShaftLength-shoulderHeightValue)
+	def bodyScrew = new Cylinder(	caseHoleDiameterValue/2,
+									measurments.get("caseScrewKeepawayLength")).toCSG()
+						.union( new Cylinder(	measurments.get("caseScrewHeadDiameter")/2,
+									10).toCSG()
+									.movez(measurments.get("caseScrewKeepawayLength")))
+	def tops =[]
+	double topHoleCenter = body_yValue-bodyEdgeToShaft-topHoleCornerInsetValue-topHoleCircleDiameterValue/2
+	println "Shaft to top hole center "+topHoleCenter
+	for(int i=0;i<270;i+=90) {
+		tops.add(bodyScrew
+					.movex(topHoleCircleDiameterValue/2)
+					.rotz(i)
+					.movey(-20)
+			)
+	} 
+	def bottoms=[]
+	for(int i=0;i<2;i++)
+		for(int j=0;j<2;j++) {
+			bottoms.add(bodyScrew
+				.rotx(180)
+				.move(bottomSquareMountHoleSizeValue*i, bottomSquareMountHoleSizeValue*j, -body_zValue)
+				.move(-bottomSquareMountHoleSizeValue/2, -bottomSquareMountHoleSizeValue/2-20, 0)
+				)
+			
+		}
+	return CSG.unionAll([part,collar,bottomCOllar,bottomShaft,bottomShaftKeepaway,
+		CSG.unionAll(tops),
+		CSG.unionAll(bottoms)])
 		.setParameter(size)
 		.setRegenerate({generate()})
 }
