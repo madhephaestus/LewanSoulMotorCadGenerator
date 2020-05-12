@@ -1,3 +1,7 @@
+import com.neuronrobotics.bowlerstudio.vitamins.Vitamins
+
+import eu.mihosoft.vrl.v3d.CSG
+import eu.mihosoft.vrl.v3d.Cube
 import eu.mihosoft.vrl.v3d.parametrics.*;
 CSG generate(){
 	String type= "LewanSoulMotor"
@@ -29,30 +33,34 @@ CSG generate(){
 	def shoulderHeightValue = measurments.shoulderHeight
 	def bottomHoleDistanceFromCornerValue = measurments.bottomHoleDistanceFromCorner
 	def cable_zValue = measurments.cable_z
-	println "Measurment MaxTorqueNewtonmetersValue =  "+MaxTorqueNewtonmetersValue
-	println "Measurment topHoleCornerInsetValue =  "+topHoleCornerInsetValue
-	println "Measurment topHoleCircleDiameterValue =  "+topHoleCircleDiameterValue
-	println "Measurment massCentroidYValue =  "+massCentroidYValue
-	println "Measurment massCentroidXValue =  "+massCentroidXValue
-	println "Measurment shoulderDiameterValue =  "+shoulderDiameterValue
-	println "Measurment sourceValue =  "+sourceValue
-	println "Measurment massCentroidZValue =  "+massCentroidZValue
-	println "Measurment cable_xValue =  "+cable_xValue
-	println "Measurment caseHoleDiameterValue =  "+caseHoleDiameterValue
-	println "Measurment bottomSquareMountHoleSizeValue =  "+bottomSquareMountHoleSizeValue
-	println "Measurment priceValue =  "+priceValue
-	println "Measurment shaftSizeValue =  "+shaftSizeValue
-	println "Measurment shaftTypeValue =  "+shaftTypeValue
-	println "Measurment MaxFreeSpeedRadPerSecValue =  "+MaxFreeSpeedRadPerSecValue
-	println "Measurment body_yValue =  "+body_yValue
-	println "Measurment body_zValue =  "+body_zValue
-	println "Measurment massKgValue =  "+massKgValue
-	println "Measurment body_xValue =  "+body_xValue
-	println "Measurment shoulderHeightValue =  "+shoulderHeightValue
-	println "Measurment bottomHoleDistanceFromCornerValue =  "+bottomHoleDistanceFromCornerValue
-	println "Measurment cable_zValue =  "+cable_zValue
+//	println "Measurment MaxTorqueNewtonmetersValue =  "+MaxTorqueNewtonmetersValue
+//	println "Measurment topHoleCornerInsetValue =  "+topHoleCornerInsetValue
+//	println "Measurment topHoleCircleDiameterValue =  "+topHoleCircleDiameterValue
+//	println "Measurment massCentroidYValue =  "+massCentroidYValue
+//	println "Measurment massCentroidXValue =  "+massCentroidXValue
+//	println "Measurment shoulderDiameterValue =  "+shoulderDiameterValue
+//	println "Measurment sourceValue =  "+sourceValue
+//	println "Measurment massCentroidZValue =  "+massCentroidZValue
+//	println "Measurment cable_xValue =  "+cable_xValue
+//	println "Measurment caseHoleDiameterValue =  "+caseHoleDiameterValue
+//	println "Measurment bottomSquareMountHoleSizeValue =  "+bottomSquareMountHoleSizeValue
+//	println "Measurment priceValue =  "+priceValue
+//	println "Measurment shaftSizeValue =  "+shaftSizeValue
+//	println "Measurment shaftTypeValue =  "+shaftTypeValue
+//	println "Measurment MaxFreeSpeedRadPerSecValue =  "+MaxFreeSpeedRadPerSecValue
+//	println "Measurment body_yValue =  "+body_yValue
+//	println "Measurment body_zValue =  "+body_zValue
+//	println "Measurment massKgValue =  "+massKgValue
+//	println "Measurment body_xValue =  "+body_xValue
+//	println "Measurment shoulderHeightValue =  "+shoulderHeightValue
+//	println "Measurment bottomHoleDistanceFromCornerValue =  "+bottomHoleDistanceFromCornerValue
+//	println "Measurment cable_zValue =  "+cable_zValue
 	// Stub of a CAD object
-	CSG part = new Cube().toCSG()
+	CSG part = new Cube(body_xValue,body_yValue,body_zValue).toCSG()
+					.toZMax()
+					.toYMax()
+					.movey(body_xValue/2)
+	
 	return part
 		.setParameter(size)
 		.setRegenerate({generate()})
