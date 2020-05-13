@@ -93,6 +93,11 @@ CSG generate(){
 					.movey(-20)
 			)
 	} 
+	bodyScrew = new Cylinder(	caseHoleDiameterValue/2,
+									measurments.get("caseScrewKeepawayLength")).toCSG()
+						.union( new Cylinder(	measurments.get("caseScrewHeadDiameter")/2,
+									bottomShaftLength+shoulderHeightValue+bottomShaftLength-measurments.get("caseScrewKeepawayLength")).toCSG()
+									.movez(measurments.get("caseScrewKeepawayLength")))
 	def bottoms=[]
 	for(int i=0;i<2;i++)
 		for(int j=0;j<2;j++) {
