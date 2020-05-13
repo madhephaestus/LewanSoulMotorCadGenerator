@@ -81,7 +81,7 @@ CSG generate(){
 	def bodyScrew = new Cylinder(	caseHoleDiameterValue/2,
 									measurments.get("caseScrewKeepawayLength")).toCSG()
 						.union( new Cylinder(	measurments.get("caseScrewHeadDiameter")/2,
-									10).toCSG()
+									2).toCSG()
 									.movez(measurments.get("caseScrewKeepawayLength")))
 	def tops =[]
 	double topHoleCenter = body_yValue-bodyEdgeToShaft-topHoleCornerInsetValue-topHoleCircleDiameterValue/2
