@@ -35,6 +35,8 @@ CSG generate(){
 	def bottomHoleDistanceFromCornerValue = measurments.bottomHoleDistanceFromCorner
 	def cable_zValue = measurments.cable_z
 	def bottomShaftLength= measurments.get("bottomShaftLength")
+	HashMap<String,Object> measurmentsHorn = Vitamins.getConfiguration(  shaftTypeValue,shaftSizeValue)
+	def hornKeepawayLen = measurmentsHorn.mountPlateToHornTop
 	for(String key:measurments.keySet().stream().sorted().collect(Collectors.toList())){
 		//println "LewanSoul value "+key+" "+measurments.get(key)
 	}
@@ -81,11 +83,11 @@ CSG generate(){
 	def bodyScrew = new Cylinder(	caseHoleDiameterValue/2,
 									measurments.get("caseScrewKeepawayLength")).toCSG()
 						.union( new Cylinder(	measurments.get("caseScrewHeadDiameter")/2,
-									3).toCSG()
+									hornKeepawayLen-measurments.get("caseScrewKeepawayLength")).toCSG()
 									.movez(measurments.get("caseScrewKeepawayLength")))
 	def tops =[]
 	double topHoleCenter = body_yValue-bodyEdgeToShaft-topHoleCornerInsetValue-topHoleCircleDiameterValue/2
-	println "Shaft to top hole center "+topHoleCenter
+	//println "Shaft to top hole center "+topHoleCenter
 	for(int i=0;i<270;i+=90) {
 		tops.add(bodyScrew
 					.movex(topHoleCircleDiameterValue/2)
