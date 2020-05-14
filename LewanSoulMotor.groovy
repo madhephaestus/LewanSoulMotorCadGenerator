@@ -36,7 +36,7 @@ CSG generate(){
 	def cable_zValue = measurments.cable_z
 	def bottomShaftLength= measurments.get("bottomShaftLength")
 	for(String key:measurments.keySet().stream().sorted().collect(Collectors.toList())){
-		println "LewanSoul value "+key+" "+measurments.get(key)
+		//println "LewanSoul value "+key+" "+measurments.get(key)
 	}
 //	println "Measurment MaxTorqueNewtonmetersValue =  "+MaxTorqueNewtonmetersValue
 //	println "Measurment topHoleCornerInsetValue =  "+topHoleCornerInsetValue
