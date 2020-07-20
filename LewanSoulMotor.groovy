@@ -12,6 +12,7 @@ CSG generate(){
 	StringParameter size = new StringParameter(	type+" Default",args.get(0),Vitamins.listVitaminSizes(type))
 	HashMap<String,Object> measurments = Vitamins.getConfiguration( type,size.getStrValue())
 
+	LengthParameter offset		= new LengthParameter("printerOffset",0.5,[2,0])
 	def MaxTorqueNewtonmetersValue = measurments.MaxTorqueNewtonmeters
 	def topHoleCornerInsetValue = measurments.topHoleCornerInset
 	def topHoleCircleDiameterValue = measurments.topHoleCircleDiameter
@@ -72,7 +73,7 @@ CSG generate(){
 	def bottomCOllar = collar
 						.toZMax()
 						.movez(-body_zValue)
-	def bottomShaft =new Cylinder(	measurments.get("bottomShaftDiameter")/2,
+	def bottomShaft =new Cylinder(	measurments.get("bottomShaftDiameter")/2+offset.getMM()/2,
 									bottomShaftLength).toCSG()
 						.toZMax()
 						.movez(-body_zValue-shoulderHeightValue)
