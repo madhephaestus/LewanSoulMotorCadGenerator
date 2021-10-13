@@ -111,7 +111,19 @@ CSG generate(){
 				)
 			
 		}
-	return CSG.unionAll([part,collar,bottomCOllar,bottomShaft,bottomShaftKeepaway,
+	CSG cable = new Cube(9,9,12.5).toCSG()
+				.toZMin()
+				.toYMin()
+				.movey(bodyEdgeToShaft)
+				.movez(-body_zValue)
+	CSG sidecable = new Cube(9,9,12.5).toCSG()
+				.toZMin()
+				.toXMin()
+				.toYMax()
+				.movey(bodyEdgeToShaft-9.24)
+				.movex(bodyEdgeToShaft)
+				.movez(-body_zValue)
+	return CSG.unionAll([part,collar,bottomCOllar,bottomShaft,bottomShaftKeepaway,cable,sidecable,sidecable.mirrorx(),
 		CSG.unionAll(tops),
 		CSG.unionAll(bottoms)])
 		.setParameter(size)
